@@ -13,7 +13,8 @@ using namespace std;
 
 #include "Math/modp.hpp"
 
-/* This is a wrapper class for the modp data type
+/**
+ * This is a wrapper class for the modp data type
  * It is used to be interface compatible with the gfp
  * type, which then allows us to template the Share
  * data type.

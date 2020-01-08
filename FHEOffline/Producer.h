@@ -72,6 +72,7 @@ public:
   void run(const Player& P, const FHE_PK& pk,
       const Ciphertext& calpha, EncCommitBase<T, FD, S>& EC,
       DistDecrypt<FD>& dd, const T& alphai);
+      
   int output(const Player& P, int thread, int output_thread = 0);
 
   int sacrifice(const Player& P, MAC_Check<T>& MC);

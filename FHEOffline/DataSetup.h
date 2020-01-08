@@ -13,6 +13,9 @@
 
 class DataSetup;
 
+/**
+ * Holds FHE parameters, public and secret keys.
+ */
 template <class FD>
 class PartSetup
 {
@@ -27,62 +30,68 @@ public:
   typename FD::T alphai;
 
   PartSetup();
+
   void generate_setup(int n_parties, int plaintext_length, int sec, int slack,
-      bool round_up);
-  void output_setup(ostream& s) const;
+                      bool round_up);
+  void output_setup(ostream &s) const;
 
-  void fake(vector<FHE_SK>& sks, vector<T>& alphais, int nplayers, bool distributed = true);
-  void fake(vector<PartSetup<FD> >& setups, int nplayers, bool distributed = true);
-  void insecure_debug_keys(vector<PartSetup<FD> >& setups, int nplayers, bool simple_pk);
+  void fake(vector<FHE_SK> &sks, vector<T> &alphais, int nplayers, bool distributed = true);
+  void fake(vector<PartSetup<FD>> &setups, int nplayers, bool distributed = true);
+  void insecure_debug_keys(vector<PartSetup<FD>> &setups, int nplayers, bool simple_pk);
 
-  void pack(octetStream& os);
-  void unpack(octetStream& os);
+  void pack(octetStream &os);
+  void unpack(octetStream &os);
 
   void init_field();
 
   void check(int sec) const;
-  bool operator!=(const PartSetup<FD>& other);
+  bool operator!=(const PartSetup<FD> &other);
 };
 
+/**
+ * Holds FHE parameters, public and secret keys and calpha ciphertexts.
+ */
 class DataSetup
 {
 public:
   PartSetup<FFT_Data> setup_p;
   PartSetup<P2Data> setup_2;
 
-  FHE_Params &params_p,&params_2;
-  FFT_Data& FTD;
-  P2Data& P2D;
+  FHE_Params &params_p, &params_2;
+  FFT_Data &FTD;
+  P2Data &P2D;
 
-  FHE_PK& pk_p;
-  FHE_SK& sk_p;
+  FHE_PK &pk_p;
+  FHE_SK &sk_p;
 
-  FHE_PK& pk_2;
-  FHE_SK& sk_2;
+  FHE_PK &pk_2;
+  FHE_SK &sk_2;
 
-  Ciphertext& calphap;
-  Ciphertext& calpha2;
+  Ciphertext &calphap;
+  Ciphertext &calpha2;
 
-  gfp& alphapi;
-  gf2n_short& alpha2i;
+  gfp &alphapi;
+  gf2n_short &alpha2i;
 
   DataSetup();
-  DataSetup(Names & N, bool skip_2 = false);
-  DataSetup(const DataSetup& other) : DataSetup() { *this = other; }
-  DataSetup& operator=(const DataSetup& other);
+  DataSetup(Names &N, bool skip_2 = false);
+  DataSetup(const DataSetup &other) : DataSetup() { *this = other; }
+  DataSetup &operator=(const DataSetup &other);
 
   void write_setup(string dir, bool skip_2);
   void write_setup(bool skip_2);
-  void write_setup(const Names& N, bool skip_2);
+  void write_setup(const Names &N, bool skip_2);
   string get_prep_dir(int n_parties) const;
   void read_setup(bool skip_2, string dir = PREP_DIR);
-  void read(Names& N, bool skip_2 = false, string dir = PREP_DIR);
+  void read(Names &N, bool skip_2 = false, string dir = PREP_DIR);
   void output(int my_number, int nn, bool specific_dir = false);
   template <class FD>
-  PartSetup<FD>& part();
+  PartSetup<FD> &part();
 };
 
-template<> inline PartSetup<FFT_Data>& DataSetup::part<FFT_Data>() { return setup_p; }
-template<> inline PartSetup<P2Data>& DataSetup::part<P2Data>() { return setup_2; }
+template <>
+inline PartSetup<FFT_Data> &DataSetup::part<FFT_Data>() { return setup_p; }
+template <>
+inline PartSetup<P2Data> &DataSetup::part<P2Data>() { return setup_2; }
 
 #endif /* FHEOFFLINE_DATASETUP_H_ */

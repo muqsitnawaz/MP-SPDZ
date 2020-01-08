@@ -6,11 +6,6 @@
 #include "Math/gfp.h"
 #include "FHE/Ring.h"
 
-/* Class for holding modular arithmetic data wrt the ring 
- *
- * It also holds the ring
- */
-
 
 class FFT_Data
 {
